@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/28049243/README.md)
+[README.md](https://github.com/user-attachments/files/28049479/README.md)
 # Data-Structure
 
 > 用 Java 从零手写数据结构与算法，持续学习中，后续会持续更新 🚀
@@ -59,6 +59,20 @@
 ```
 Data-Structure/
 └── src/
+    ├── linearlist/
+    │   ├── MyArrayList.java
+    │   ├── MyCircularLinkedList.java
+    │   ├── MyDoubleCircularLinkedList.java
+    │   ├── MyDoubleLinkedList.java
+    │   └── MyLinkedList.java
+    ├── queue/
+    │   ├── MyArrayDeque.java
+    │   ├── MyCircularQueue.java
+    │   ├── MyDeque.java
+    │   └── MyLinkQueue.java
+    ├── stack/
+    │   ├── MyArrayStack.java
+    │   └── MyLinkedStack.java
     └── tree/
         ├── AVLTree.java
         ├── BinarySearchTree.java
