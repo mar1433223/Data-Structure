@@ -52,6 +52,13 @@
 | `HuffmanTree` | 哈夫曼树，WPL 最小构造 |
 | `DSU` | 并查集，路径压缩 + 按秩合并 |
 
+### 图
+
+| 类名 | 说明 |
+|------|------|
+| `AdjacencyMatrix` | 邻接矩阵，支持带权无向图 |
+| `AdjacencyList` | 邻接表，头插法建链表 |
+
 ---
 
 ## 项目结构
@@ -73,18 +80,21 @@ Data-Structure/
     ├── stack/
     │   ├── MyArrayStack.java
     │   └── MyLinkedStack.java
-    └── tree/
-        ├── AVLTree.java
-        ├── BinarySearchTree.java
-        ├── BinaryTree.java
-        ├── BinaryTreeTraversal.java
-        ├── ChildSiblingTree.java
-        ├── ChildTree.java
-        ├── CompleteBinaryTree.java
-        ├── DSU.java
-        ├── ParentTree.java
-        ├── SequentialBinaryTree.java
-        └── ThreadedBinaryTree.java
+    ├── tree/
+    │   ├── AVLTree.java
+    │   ├── BinarySearchTree.java
+    │   ├── BinaryTree.java
+    │   ├── BinaryTreeTraversal.java
+    │   ├── ChildSiblingTree.java
+    │   ├── ChildTree.java
+    │   ├── CompleteBinaryTree.java
+    │   ├── DSU.java
+    │   ├── ParentTree.java
+    │   ├── SequentialBinaryTree.java
+    │   └── ThreadedBinaryTree.java
+    └── graph/
+        ├── AdjacencyMatrix.java
+        └── AdjacencyList.java
 ```
 
 ---
@@ -102,7 +112,7 @@ Data-Structure/
 目前仍在学习中，后续计划陆续补充：
 
 **图**
-- [ ] 图的存储（邻接矩阵 / 邻接表）
+- [x] 图的存储（邻接矩阵 / 邻接表）
 - [ ] 图的遍历（BFS / DFS）
 - [ ] 最短路径（Dijkstra / Floyd）
 - [ ] 最小生成树（Prim / Kruskal）
