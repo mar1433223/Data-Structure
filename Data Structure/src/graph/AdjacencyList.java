@@ -37,7 +37,7 @@ public class AdjacencyList {
         m=sc.nextInt();
         String s=sc.next();
         for(int i=1;i<=n;i++){
-            v[i]=new vv(sc.next().charAt(i-1));
+            v[i]=new vv(s.charAt(i-1));
         }
         char x,y;
         int w,xi,yi;
