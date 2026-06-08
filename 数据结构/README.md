@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/28049479/README.md)
 # Data-Structure
 
 > 用 Java 从零手写数据结构与算法，持续学习中，后续会持续更新 🚀
@@ -84,20 +83,20 @@ Data-Structure/
     ├── stack/
     │   ├── MyArrayStack.java
     │   └── MyLinkedStack.java
-    ├── tree/
-    │   ├── AVLTree.java
-    │   ├── BinarySearchTree.java
-    │   ├── BinaryTree.java
-    │   ├── BinaryTreeTraversal.java
-    │   ├── ChildSiblingTree.java
-    │   ├── ChildTree.java
-    │   ├── CompleteBinaryTree.java
-    │   ├── DSU.java
-    │   ├── ParentTree.java
-    │   ├── Huffman.java
-    │   ├── Huffman1.java
-    │   ├── SequentialBinaryTree.java
-    │   └── ThreadedBinaryTree.java
+    └── tree/
+        ├── AVLTree.java
+        ├── BinarySearchTree.java
+        ├── BinaryTree.java
+        ├── BinaryTreeTraversal.java
+        ├── ChildSiblingTree.java
+        ├── ChildTree.java
+        ├── CompleteBinaryTree.java
+        ├── DSU.java
+        ├── Huffman.java
+        ├── Huffman1.java
+        ├── ParentTree.java
+        ├── SequentialBinaryTree.java
+        └── ThreadedBinaryTree.java
     └── graph/
         ├── AdjacencyMatrix.java
         ├── AdjacencyList.java

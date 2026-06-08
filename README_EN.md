@@ -57,6 +57,10 @@ This project is my code record for self-studying data structures. All structures
 |------|------|
 | `AdjacencyMatrix` | Adjacency matrix, supports weighted undirected graphs |
 | `AdjacencyList` | Adjacency list, head-insertion linked list construction |
+| `BFS` | Breadth-first search, queue-based |
+| `DFS` | Depth-first search, recursion-based |
+| `OrthogonalList` | Orthogonal list, combines out-degree and in-degree for digraphs |
+| `AdjacencyMultilist` | Adjacency multilist, each undirected edge stored only once |
 
 ---
 
@@ -89,11 +93,17 @@ Data-Structure/
     │   ├── CompleteBinaryTree.java
     │   ├── DSU.java
     │   ├── ParentTree.java
+    │   ├── Huffman.java
+    │   ├── Huffman1.java
     │   ├── SequentialBinaryTree.java
     │   └── ThreadedBinaryTree.java
     └── graph/
         ├── AdjacencyMatrix.java
-        └── AdjacencyList.java
+        ├── AdjacencyList.java
+        ├── BFS.java
+        ├── DFS.java
+        ├── OrthogonalList.java
+        └── AdjacencyMultilist.java
 ```
 
 ---
@@ -112,7 +122,8 @@ Still actively learning — planned additions:
 
 **Graph**
 - [x] Graph storage (adjacency matrix / adjacency list)
-- [ ] Graph traversal (BFS / DFS)
+- [x] Graph traversal (BFS / DFS)
+- [x] Orthogonal list / Adjacency multilist
 - [ ] Shortest path (Dijkstra / Floyd)
 - [ ] Minimum spanning tree (Prim / Kruskal)
 - [ ] Topological sorting
