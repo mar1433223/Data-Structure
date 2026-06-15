@@ -61,6 +61,7 @@
 | `OrthogonalList.java` | 十字链表，有向图的出边和入边链表表示 |
 | `AdjacencyMultilist.java` | 邻接多重表，无向图中每条边只保存一份 |
 | `Kruskal.java` | Kruskal 最小生成树算法，边排序 + 并查集思想 |
+| `Prim.java` | Prim 最小生成树算法，基于邻接矩阵和距离数组逐步扩展生成树 |
 
 ## 技术栈
 
@@ -75,7 +76,7 @@
 Data-Structure/
 ├── Data Structure/
 │   └── src/
-│       ├── graph/        # 图的存储结构、遍历和 Kruskal 算法
+│       ├── graph/        # 图的存储结构、遍历和最小生成树算法
 │       ├── linearlist/   # 顺序表、单链表、循环链表、双向链表
 │       ├── queue/        # 循环队列、链队列、双端队列
 │       ├── stack/        # 顺序栈、链栈
@@ -125,7 +126,7 @@ Set-Content -Encoding ASCII out/check/avl-input.txt "3 10 20 30 10 20 30"
 cmd /c "java -cp out\check tree.AVLTree < out\check\avl-input.txt"
 ```
 
-`graph.Kruskal` 的源码末尾保留了一组样例输入，也可以保存为输入文件后验证：
+`graph.Kruskal` 和 `graph.Prim` 的源码末尾都保留了一组样例输入，也可以保存为输入文件后验证：
 
 ```powershell
 @"
@@ -147,6 +148,7 @@ cmd /c "java -cp out\check tree.AVLTree < out\check\avl-input.txt"
 3 4 10
 "@ | Set-Content -Encoding ASCII out/check/kruskal-input.txt
 cmd /c "java -cp out\check graph.Kruskal < out\check\kruskal-input.txt"
+cmd /c "java -cp out\check graph.Prim < out\check\kruskal-input.txt"
 ```
 
 当前项目没有独立的单元测试框架或测试目录；现阶段检查方式主要是：
@@ -162,14 +164,14 @@ cmd /c "java -cp out\check graph.Kruskal < out\check\kruskal-input.txt"
 | 栈 | 已实现 | 覆盖数组栈和链栈 |
 | 队列 | 已实现 | 覆盖循环队列、链队列、链式双端队列和数组双端队列 |
 | 树 | 已实现 / 持续完善 | 已覆盖普通树表示、二叉树遍历、线索二叉树、BST、AVL、哈夫曼树和并查集 |
-| 图 | 已实现 / 持续完善 | 已覆盖邻接矩阵、邻接表、十字链表、邻接多重表、BFS、DFS 和 Kruskal |
+| 图 | 已实现 / 持续完善 | 已覆盖邻接矩阵、邻接表、十字链表、邻接多重表、BFS、DFS、Kruskal 和 Prim |
 | 查找 | in progress | 目前主要体现在顺序表查找、BST 查找和并查集查找，独立查找算法模块尚未建立 |
 | 排序 | in progress | Kruskal 中使用边排序；独立排序算法模块尚未建立 |
 | 动态规划 | 未开始 | 当前仓库暂无 DP 代码 |
 
 ## 后续计划
 
-- 图算法：补充 Dijkstra、Floyd、Prim、拓扑排序等常见算法，并整理运行示例。
+- 图算法：补充 Dijkstra、Floyd、拓扑排序等常见算法，并整理运行示例。
 - 查找算法：单独增加二分查找、插值查找、哈希查找等内容。
 - 排序算法：单独增加冒泡、选择、插入、希尔、归并、快速排序、堆排序等实现。
 - 堆与优先队列：补充二叉堆实现，并和哈夫曼树构造进行对照。
