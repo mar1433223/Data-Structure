@@ -19,7 +19,7 @@ public class DFS {
         return -1;
     }
     static void dfs(int i){
-        if(flag[i]==true){
+        if(flag[i]){
             return;
         }
         flag[i]=true;
