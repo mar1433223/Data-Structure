@@ -64,6 +64,7 @@
 | `Prim.java` | Prim 最小生成树算法，基于邻接矩阵和距离数组逐步扩展生成树 |
 | `Dijkstra.java` | Dijkstra 单源最短路径算法，基于邻接矩阵、`dist` 和 `pre` 数组输出路径 |
 | `ToPo.java` | 拓扑排序，基于邻接表、入度数组和队列判断有向无环图 |
+| `CriticalPath.java` | 关键路径，基于邻接表、拓扑序、事件最早/最晚发生时间输出关键活动 |
 
 ## 技术栈
 
@@ -78,7 +79,7 @@
 Data-Structure/
 ├── Data Structure/
 │   └── src/
-│       ├── graph/        # 图的存储结构、遍历、最小生成树、最短路径和拓扑排序
+│       ├── graph/        # 图的存储结构、遍历、最小生成树、最短路径、拓扑排序和关键路径
 │       ├── linearlist/   # 顺序表、单链表、循环链表、双向链表
 │       ├── queue/        # 循环队列、链队列、双端队列
 │       ├── stack/        # 顺序栈、链栈
@@ -102,7 +103,7 @@ Data-Structure/
 
 1. 打开项目根目录 `Data-Structure`。
 2. 将 `Data Structure/src` 识别为 Sources Root。
-3. 打开任意类，例如 `linearlist.MyArrayList`、`tree.AVLTree`、`graph.Kruskal`、`graph.ToPo`。
+3. 打开任意类，例如 `linearlist.MyArrayList`、`tree.AVLTree`、`graph.Kruskal`、`graph.ToPo`、`graph.CriticalPath`。
 4. 直接运行该类中的 `main` 方法。
 
 ### 使用命令行编译
@@ -197,6 +198,27 @@ D E
 cmd /c "java -cp out\check graph.ToPo < out\check\topo-input.txt"
 ```
 
+`graph.CriticalPath` 读取 AOE 网的顶点序列和带权有向边，先做拓扑排序计算事件最早发生时间，再反向计算最晚发生时间，最后输出关键活动边。源码末尾保留了样例输入：
+
+```powershell
+@"
+9 11
+ABCDEFGHY
+A B 6
+A C 4
+A D 5
+B E 1
+C E 1
+D F 2
+E G 9
+E H 7
+F H 4
+G Y 2
+H Y 4
+"@ | Set-Content -Encoding ASCII out/check/critical-path-input.txt
+cmd /c "java -cp out\check graph.CriticalPath < out\check\critical-path-input.txt"
+```
+
 当前项目没有独立的单元测试框架或测试目录；现阶段检查方式主要是：
 
 - 全量 `javac` 编译，确认所有 Java 源码能通过编译。
@@ -210,14 +232,14 @@ cmd /c "java -cp out\check graph.ToPo < out\check\topo-input.txt"
 | 栈 | 已实现 | 覆盖数组栈和链栈 |
 | 队列 | 已实现 | 覆盖循环队列、链队列、链式双端队列和数组双端队列 |
 | 树 | 已实现 / 持续完善 | 已覆盖普通树表示、二叉树遍历、线索二叉树、BST、AVL、哈夫曼树和并查集 |
-| 图 | 已实现 / 持续完善 | 已覆盖邻接矩阵、邻接表、十字链表、邻接多重表、BFS、DFS、Kruskal、Prim、Dijkstra 和拓扑排序 |
+| 图 | 已实现 / 持续完善 | 已覆盖邻接矩阵、邻接表、十字链表、邻接多重表、BFS、DFS、Kruskal、Prim、Dijkstra、拓扑排序和关键路径 |
 | 查找 | in progress | 目前主要体现在顺序表查找、BST 查找和并查集查找，独立查找算法模块尚未建立 |
 | 排序 | in progress | Kruskal 中使用边排序；独立排序算法模块尚未建立 |
 | 动态规划 | 未开始 | 当前仓库暂无 DP 代码 |
 
 ## 后续计划
 
-- 图算法：继续补充 Floyd 等常见算法，并整理更多运行示例。
+- 图算法：继续补充 Floyd 等常见算法，并继续整理拓扑排序、关键路径等有向图算法的运行示例。
 - 查找算法：单独增加二分查找、插值查找、哈希查找等内容。
 - 排序算法：单独增加冒泡、选择、插入、希尔、归并、快速排序、堆排序等实现。
 - 堆与优先队列：补充二叉堆实现，并和哈夫曼树构造进行对照。
