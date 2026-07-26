@@ -66,6 +66,17 @@
 | `ToPo.java` | 拓扑排序，基于邻接表、入度数组和队列判断有向无环图 |
 | `CriticalPath.java` | 关键路径，基于邻接表、拓扑序、事件最早/最晚发生时间输出关键活动 |
 
+### 排序 `sort`
+
+| 文件 | 当前内容 |
+| --- | --- |
+| `BubbleSort.java` | 冒泡排序，相邻元素交换，并用 `flag` 在已有序时提前结束 |
+| `SelectionSort.java` | 简单选择排序，每轮从未排序区间选出最小值放到前端 |
+| `InsertionSort.java` | 直接插入排序，将当前元素插入前方已有序区间 |
+| `ShellSort.java` | 希尔排序，按 `n / 2` 递减增量执行分组插入，并输出每趟结果 |
+| `QuickSort.java` | 快速排序，以区间首元素为基准，使用左右指针完成划分和递归 |
+| `HeapSort.java` | 堆排序，使用 1-based 数组建大根堆，再交换堆顶并向下调整 |
+
 ## 技术栈
 
 - Java：核心实现语言，当前代码使用普通 Java 类和 `main` 方法组织示例。
@@ -82,6 +93,7 @@ Data-Structure/
 │       ├── graph/        # 图的存储结构、遍历、最小生成树、最短路径、拓扑排序和关键路径
 │       ├── linearlist/   # 顺序表、单链表、循环链表、双向链表
 │       ├── queue/        # 循环队列、链队列、双端队列
+│       ├── sort/         # 冒泡、选择、插入、希尔、快速、堆排序
 │       ├── stack/        # 顺序栈、链栈
 │       └── tree/         # 普通树、二叉树、搜索树、AVL、哈夫曼树、并查集
 ├── 数据结构/
@@ -121,6 +133,15 @@ java -cp out/check linearlist.MyArrayList
 java -cp out/check stack.MyArrayStack
 java -cp out/check queue.MyCircularQueue
 ```
+
+排序示例先读取元素个数，再读取待排序整数。例如：
+
+```powershell
+"8 49 38 65 97 76 13 27 49" | java -cp out/check sort.QuickSort
+"8 49 38 65 97 76 13 27 49" | java -cp out/check sort.HeapSort
+```
+
+其余排序类可将类名替换为 `BubbleSort`、`SelectionSort`、`InsertionSort` 或 `ShellSort`。当前实现使用长度为 `105` 的数组和 1-based 下标，输入规模应控制在 104 个整数以内。
 
 树和图目录中有不少示例通过 `Scanner` 读取标准输入。运行这类示例时需要手动输入数据，或用管道传入数据，例如：
 
@@ -234,14 +255,14 @@ cmd /c "java -cp out\check graph.CriticalPath < out\check\critical-path-input.tx
 | 树 | 已实现 / 持续完善 | 已覆盖普通树表示、二叉树遍历、线索二叉树、BST、AVL、哈夫曼树和并查集 |
 | 图 | 已实现 / 持续完善 | 已覆盖邻接矩阵、邻接表、十字链表、邻接多重表、BFS、DFS、Kruskal、Prim、Dijkstra、拓扑排序和关键路径 |
 | 查找 | in progress | 目前主要体现在顺序表查找、BST 查找和并查集查找，独立查找算法模块尚未建立 |
-| 排序 | in progress | Kruskal 中使用边排序；独立排序算法模块尚未建立 |
+| 排序 | 已实现 / 持续完善 | 已建立独立 `sort` 模块，覆盖冒泡、选择、直接插入、希尔、快速和堆排序 |
 | 动态规划 | 未开始 | 当前仓库暂无 DP 代码 |
 
 ## 后续计划
 
 - 图算法：继续补充 Floyd 等常见算法，并继续整理拓扑排序、关键路径等有向图算法的运行示例。
 - 查找算法：单独增加二分查找、插值查找、哈希查找等内容。
-- 排序算法：单独增加冒泡、选择、插入、希尔、归并、快速排序、堆排序等实现。
+- 排序算法：补充归并排序、计数排序，并对现有实现增加边界输入和重复元素测试。
 - 堆与优先队列：补充二叉堆实现，并和哈夫曼树构造进行对照。
 - 高级树结构：继续学习 B 树、B+ 树、红黑树。
 - 测试改进：后续可以引入 JUnit，把当前 `main` 示例沉淀为可重复运行的测试用例。
