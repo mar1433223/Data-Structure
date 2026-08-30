@@ -94,6 +94,7 @@ public class Huffman1 {
             System.out.println(val[i]+" "+code[i]);
         }
         sc.close();
+
     }
 
 }
