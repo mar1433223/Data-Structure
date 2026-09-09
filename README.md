@@ -46,6 +46,7 @@
 | `ThreadedBinaryTree.java` | 中序线索二叉树，支持线索化并查询指定节点的前驱/后继 |
 | `BinarySearchTree.java` | 二叉搜索树，包含递归/非递归查找、插入和删除示例 |
 | `AVLTree.java` | AVL 平衡二叉树，包含插入、删除和 LL/RR/LR/RL 旋转调整 |
+| `BTree.java` | 固定 5 阶 B 树，支持查找、插入、结点分裂和按层打印；删除入口尚未实现 |
 | `Huffman.java` | 基于优先队列构造哈夫曼树，并生成字符编码 |
 | `Huffman1.java` | 使用数组式节点表构造哈夫曼树和编码 |
 | `DSU.java` | 并查集，包含初始化、查找、合并和连通性检查 |
@@ -105,7 +106,7 @@ Data-Structure/
 │       ├── search/       # 二分查找、开放定址哈希查找
 │       ├── sort/         # 冒泡、选择、插入、希尔、快速、堆、归并、计数排序
 │       ├── stack/        # 顺序栈、链栈
-│       └── tree/         # 普通树、二叉树、搜索树、AVL、哈夫曼树、并查集
+│       └── tree/         # 普通树、二叉树、搜索树、AVL、B 树、哈夫曼树、并查集
 ├── 数据结构/
 │   ├── README.md
 │   └── Data-Structure-复习资料.md
@@ -125,7 +126,7 @@ Data-Structure/
 
 1. 打开项目根目录 `Data-Structure`。
 2. 将 `Data Structure/src` 识别为 Sources Root。
-3. 打开任意类，例如 `linearlist.MyArrayList`、`tree.AVLTree`、`graph.Kruskal`、`graph.ToPo`、`graph.CriticalPath`。
+3. 打开任意类，例如 `linearlist.MyArrayList`、`tree.AVLTree`、`tree.BTree`、`graph.Kruskal`、`graph.ToPo`、`graph.CriticalPath`。
 4. 直接运行该类中的 `main` 方法。
 
 ### 使用命令行编译
@@ -162,6 +163,13 @@ java -cp out/check queue.MyCircularQueue
 ```powershell
 Set-Content -Encoding ASCII out/check/avl-input.txt "3 10 20 30 10 20 30"
 cmd /c "java -cp out\check tree.AVLTree < out\check\avl-input.txt"
+```
+
+`tree.BTree` 每次读取一个待插入整数，再读取 `y` 或 `n` 决定是否继续；每次插入后会按层打印当前 5 阶 B 树。例如：
+
+```powershell
+Set-Content -Encoding ASCII out/check/btree-input.txt "10 y 20 y 30 y 40 y 50 n"
+cmd /c "java -cp out\check tree.BTree < out\check\btree-input.txt"
 ```
 
 `graph.Kruskal` 和 `graph.Prim` 的源码末尾都保留了一组样例输入，也可以保存为输入文件后验证：
@@ -266,7 +274,7 @@ cmd /c "java -cp out\check graph.CriticalPath < out\check\critical-path-input.tx
 | 线性表 | 已实现 | 覆盖顺序表、单链表、循环链表、双向链表和双向循环链表 |
 | 栈 | 已实现 | 覆盖数组栈和链栈 |
 | 队列 | 已实现 | 覆盖循环队列、链队列、链式双端队列和数组双端队列 |
-| 树 | 已实现 / 持续完善 | 已覆盖普通树表示、二叉树遍历、线索二叉树、BST、AVL、哈夫曼树和并查集 |
+| 树 | 已实现 / 持续完善 | 已覆盖普通树表示、二叉树遍历、线索二叉树、BST、AVL、5 阶 B 树插入、哈夫曼树和并查集 |
 | 图 | 已实现 / 持续完善 | 已覆盖邻接矩阵、邻接表、十字链表、邻接多重表、BFS、DFS、Kruskal、Prim、Dijkstra、拓扑排序和关键路径 |
 | 查找 | 已建立 / 持续完善 | 已建立独立 `search` 模块，包含二分查找和开放定址哈希查找；BST、并查集中的查找实现仍可对照学习 |
 | 排序 | 已实现 / 持续完善 | 已建立独立 `sort` 模块，覆盖冒泡、选择、直接插入、希尔、快速、堆、归并和计数排序 |
@@ -278,5 +286,5 @@ cmd /c "java -cp out\check graph.CriticalPath < out\check\critical-path-input.tx
 - 查找算法：补充插值查找、折半查找的边界用例，以及哈希表的查找失败、冲突链和满表处理。
 - 排序算法：补充基数排序，并对归并、计数排序和现有实现增加边界输入、负数处理和重复元素测试。
 - 堆与优先队列：补充二叉堆实现，并和哈夫曼树构造进行对照。
-- 高级树结构：继续学习 B 树、B+ 树、红黑树。
+- 高级树结构：为现有 B 树补齐删除与更多边界用例，继续学习 B+ 树、红黑树。
 - 测试改进：后续可以引入 JUnit，把当前 `main` 示例沉淀为可重复运行的测试用例。
