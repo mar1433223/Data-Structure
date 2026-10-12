@@ -1962,7 +1962,7 @@ if (ete == lte) {
 
 ## 8. 串与模式匹配 (KMP)
 
-本章根据《串及KMP匹配算法》第 1–4 页整理。PDF 使用 C 和 1-based 下标；下方 Java 代码是学习参考模板，不代表 `src` 已新增 KMP 实现。
+本章根据《串及KMP匹配算法》第 1–4 页整理。PDF 使用 C 和 1-based 下标；本章统一改用 0-based 下标，并约定 `next[0] = -1`。下方 Java 代码是学习参考模板，不代表 `src` 已新增 KMP 实现。
 
 ### 8.1 串的定义与存储
 
@@ -1977,7 +1977,7 @@ C 的 `\0` 结束标志不是跨语言规则。Java `String` 通过 `length()` �
 
 ### 8.2 朴素模式匹配 BF
 
-设主串长为 n、模式串长为 m：依次尝试主串的每个候选起点，从模式串第一个字符开始逐个比较；失配则把候选起点右移一位，重新比较。若用 1-based 的 `i`、`j` 表示正在比较的位置，失配时为 `i = i - j + 2`、`j = 1`。
+设主串长为 n、模式串长为 m：依次尝试主串的每个候选起点，从模式串第一个字符开始逐个比较；失配则把候选起点右移一位，重新比较。用 0-based 的 `i`、`j` 表示正在比较的位置，失配时为 `i = i - j + 1`、`j = 0`。
 
 最坏时间为 `O(nm)`（例如主串大量重复字符、模式末尾才失配），额外空间 `O(1)`。缺点是主串指针回退，已成功比较的部分可能再次比较。
 
@@ -1985,74 +1985,77 @@ C 的 `\0` 结束标志不是跨语言规则。Java `String` 通过 `length()` �
 
 **核心思想**：失配时主串指针 i 保持不动，只回退模式串指针 j。已匹配部分等于模式串的前缀，因此可利用模式串自身的重复结构跳过不可能成功的位置。
 
-PDF 的 1-based 定义为：`next[1] = 0`；对 `j >= 2`，取模式串 `P[1..j-1]` 的最长相等**真前缀和真后缀**长度 L，令 `next[j] = L + 1`。真前后缀不包括整段自身；无相等非空前后缀时 L 为 0，`next[j]` 为 1。
+**本章的 0-based 定义**：`next[0] = -1`；对 `1 <= j <= m`，取模式串 `P[0..j-1]` 的最长相等**真前缀和真后缀**长度 L，令 `next[j] = L`。真前后缀不包括整段自身；无相等非空前后缀时 L 为 0。正在比较 `P[j]` 时若失配，就令 `j = next[j]`，复用已经匹配部分的最长相等前后缀。
+
+数组分配 `m + 1` 个位置：`next[0..m-1]` 用于失配回退，额外的 `next[m]` 保存整个模式串的最长相等真前后缀长度，供完整匹配后继续寻找重叠匹配使用。`j == m` 不是一个可访问的字符下标。
 
 以 `P = "abcabd"` 为例：
 
-| j（1-based） | 当前字符 | 已匹配部分 | 最长相等真前后缀 | next[j] |
+| j（0-based） | 当前字符 | 已匹配部分 | 最长相等真前后缀 | next[j] |
 | --- | --- | --- | --- | --- |
-| 1 | a | 空 | 哨兵约定 | 0 |
-| 2 | b | a | 空 | 1 |
-| 3 | c | ab | 空 | 1 |
-| 4 | a | abc | 空 | 1 |
-| 5 | b | abca | a | 2 |
-| 6 | d | abcab | ab | 3 |
+| 0 | a | 空 | 哨兵约定 | -1 |
+| 1 | b | a | 空 | 0 |
+| 2 | c | ab | 空 | 0 |
+| 3 | a | abc | 空 | 0 |
+| 4 | b | abca | a | 1 |
+| 5 | d | abcab | ab | 2 |
+| 6 | 匹配结束 | abcabd | 空 | 0 |
 
-若主串已匹配 `abcab`，下一字符与 `d` 失配，令 `j = next[6] = 3`，用模式字符 `c` 与**同一个主串字符**继续比较；仍失配就继续回退。`j == 0` 表示没有可复用前缀，此时主串向前一位，模式串从第 1 位重新开始。
+若主串已匹配 `abcab`，下一字符与 `P[5] = 'd'` 失配，令 `j = next[5] = 2`，用 `P[2] = 'c'` 与**同一个主串字符**继续比较；仍失配就继续回退。`j == 0` 时还要比较模式串第一个字符；只有它也失配，才会退到 `j == -1`，随后令 `i++、j++`，跳过当前主串字符，从 `P[0]` 重新开始。
 
-**线性求 next**：从 `i = 1, j = 0` 开始，`next[1] = 0`；若 `j == 0` 或 `P[i] == P[j]`，执行 `next[++i] = ++j`；否则令 `j = next[j]` 继续寻找更短的可用前缀。这里回退的是前缀候选长度/位置，不是把模式串字符值当作下标。
+**线性求 next**：从 `i = 0, j = -1` 开始，`next[0] = -1`；若 `j == -1` 或 `P[i] == P[j]`，执行 `next[++i] = ++j`；否则令 `j = next[j]` 继续寻找更短的可用前缀。循环条件为 `i < m`，最后一次写入 `next[m]`。Java 的 `||` 短路求值保证 `j == -1` 时不会访问 `P[-1]`。
 
 - `next` 只由模式串决定，主串变化时可复用。
-- 在这一约定下 `next[j] < j`，且相邻项最多增加 1；最后一个模式字符不影响 `next[1..m]`。这一性质不能直接套到别的数组定义。
-- 0-based 的前缀函数 `pi[q]` 表示 `P[0..q]` 的最长相等真前后缀**长度**；`next[j] = pi[j - 2] + 1`（`j >= 2`）。长度、跳转位置、下标必须分清。
+- 在这一约定下 `next[j] < j`，且相邻项最多增加 1；最后一个模式字符不影响 `next[0..m-1]`，但可能影响额外的 `next[m]`。
+- 若对照其他资料，0-based 前缀函数 `pi[q]` 是 `P[0..q]` 的最长相等真前后缀长度，本章 `next[j] = pi[j - 1]`（`j >= 1`）。PDF 的 1-based 数组与本章的关系为 `next0[j] = next1[j + 1] - 1`（`0 <= j < m`）；不要混用下标与哨兵。
 
 预处理 `O(m)`，匹配 `O(n)`，总时间 `O(n + m)`，额外空间 `O(m)`。虽然存在回退循环，主串不回退，模式指针的总前进和回退次数为线性量级。
 
 ### 8.4 Java 参考实现与易错点
 
-下面采用与 PDF 等价的 **0-based 前缀函数**，返回第一次匹配的 0-based 起点，未找到返回 `-1`；约定空模式串返回 `0`，与 Java `String.indexOf` 一致。参数要求非 `null`。
+下面采用 **0-based 的 next 数组，`next[0] = -1`**。返回第一次匹配的 0-based 起点，未找到返回 `-1`；约定空模式串返回 `0`，与 Java `String.indexOf` 一致。参数要求非 `null`。
 
 ```java
-static int[] prefixFunction(String pattern) {
-    int[] pi = new int[pattern.length()];
-    for (int i = 1, j = 0; i < pattern.length(); i++) {
-        while (j > 0 && pattern.charAt(i) != pattern.charAt(j)) {
-            j = pi[j - 1];
-        }
-        if (pattern.charAt(i) == pattern.charAt(j)) {
+static int[] getNext(String pattern) {
+    int[] next = new int[pattern.length() + 1];
+    next[0] = -1;
+    int i = 0, j = -1;
+    while (i < pattern.length()) {
+        if (j == -1 || pattern.charAt(i) == pattern.charAt(j)) {
+            i++;
             j++;
+            next[i] = j;
+        } else {
+            j = next[j];
         }
-        pi[i] = j;
     }
-    return pi;
+    return next;
 }
 
 static int kmpIndexOf(String text, String pattern) {
     if (pattern.isEmpty()) {
         return 0;
     }
-    int[] pi = prefixFunction(pattern);
-    for (int i = 0, j = 0; i < text.length(); i++) {
-        while (j > 0 && text.charAt(i) != pattern.charAt(j)) {
-            j = pi[j - 1];
-        }
-        if (text.charAt(i) == pattern.charAt(j)) {
+    int[] next = getNext(pattern);
+    int i = 0, j = 0;
+    while (i < text.length() && j < pattern.length()) {
+        if (j == -1 || text.charAt(i) == pattern.charAt(j)) {
+            i++;
             j++;
-        }
-        if (j == pattern.length()) {
-            return i - pattern.length() + 1;
+        } else {
+            j = next[j];
         }
     }
-    return -1;
+    return j == pattern.length() ? i - j : -1;
 }
 ```
 
 **易错点与例题**：
 
-- 别把 1-based 的 `j = next[j]` 和 0-based 的 `j = pi[j - 1]` 混写；回退时不能同时推进主串 i。
+- 本章失配回退统一为 `j = next[j]`；回退时不能同时推进主串 i。`j == -1` 是哨兵，不能用它访问字符串或 `next` 数组。
 - 空模式、空主串、模式比主串长、完全匹配、末尾匹配都要覆盖。`charAt` 按 UTF-16 代码单元工作，返回的也是代码单元下标。
-- 找所有匹配（允许重叠）时，命中后记录起点，再令 `j = pi[j - 1]`；例如主串 `"aaaaa"`、模式 `"aaa"` 的匹配起点为 `0、1、2`，不能每次把 j 清零。
-- 手算 `next` 先截取当前失配位之前的部分，再找最长相等真前后缀；`"ababaca"` 的 `pi` 为 `[0, 0, 1, 2, 3, 0, 1]`，用于练习多次回退。
+- 找所有匹配（允许重叠、模式非空）时，匹配循环只以 `i < text.length()` 为条件；命中后记录起点 `i - j`，再令 `j = next[j]`（此时读取 `next[m]`），继续扫描。例如主串 `"aaaaa"`、模式 `"aaa"` 的 `next` 为 `[-1, 0, 1, 2]`，完整匹配后回退到 `j = 2`，得到起点 `0、1、2`。
+- 手算 `next` 先截取当前失配位之前的部分，再找最长相等真前后缀；`"ababaca"` 的 `next[0..m]` 为 `[-1, 0, 0, 1, 2, 3, 0, 1]`，用于练习多次回退。
 - 主串 `"abcababcabd"`、模式 `"abcabd"`：第一次在 `d` 处失配，复用 `ab` 后继续匹配，最终起点为 `5`（0-based）或 `6`（1-based）。
 
 **资料来源与范围**：本次补充依据用户提供的《串及KMP匹配算法》（4 页）、《B树的概念和常用操作》（15 页）与《B+树》（14 页）。正文为归纳后的学习笔记；Java KMP 模板和容量约定说明为配套补充，B+ 树仍是原理学习内容。
